@@ -1,0 +1,15 @@
+# Render.com Blueprint — deploys "GST Helper for E-Commerce" as a free web service.
+# See DEPLOY_GUIDE.md for click-by-click instructions.
+services:
+  - type: web
+    name: gst-helper
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "waitress-serve --host=0.0.0.0 --port=$PORT web_app:app"
+    healthCheckPath: /
+    envVars:
+      - key: PUBLIC_MODE
+        value: "1"
+      - key: PYTHON_VERSION
+        value: "3.12.10"

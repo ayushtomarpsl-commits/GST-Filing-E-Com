@@ -1,0 +1,409 @@
+/* ===================================================================
+   Help page — "How to use — step by step"
+   Extends the visual language of style.css (uses its CSS variables).
+   =================================================================== */
+
+/* ---------- Table of contents pills ---------- */
+
+.help-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.help-toc a {
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.help-toc a:hover {
+  background: var(--navy-tint);
+  border-color: #c3d7ee;
+}
+
+/* ---------- Step panels (the journey) ---------- */
+
+.step {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  scroll-margin-top: 1rem;
+}
+
+.step-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-num-faq {
+  background: var(--navy-light);
+}
+
+.step-head h3 {
+  margin: 0 0 0.25rem;
+  color: var(--navy);
+  font-size: 1.15rem;
+}
+
+.step-lede {
+  margin: 0;
+  color: var(--slate);
+  font-size: 0.92rem;
+}
+
+.sub-title {
+  margin: 1.25rem 0 0.6rem;
+  color: var(--navy);
+  font-size: 0.98rem;
+}
+
+/* ---------- Platform blocks inside Step 1 ---------- */
+
+.platform-block {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.platform-block:last-child {
+  margin-bottom: 0;
+}
+
+.platform-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.pb-note {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--slate);
+}
+
+/* ---------- Text lists ---------- */
+
+.mini-list {
+  margin: 0.25rem 0 0.85rem;
+  padding-left: 1.15rem;
+  font-size: 0.9rem;
+}
+
+.mini-list li {
+  margin: 0.35rem 0;
+}
+
+.mini-list .path,
+.big-steps .path {
+  color: var(--slate);
+}
+
+.mini-list strong,
+.big-steps strong,
+.path strong {
+  color: var(--navy);
+}
+
+.big-steps {
+  margin: 1rem 0 0.5rem;
+  padding-left: 1.35rem;
+  font-size: 0.92rem;
+}
+
+.big-steps li {
+  margin: 0.5rem 0;
+}
+
+/* ---------- SVG containers ---------- */
+
+.svg-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.35rem;
+  margin: 0.5rem 0;
+}
+
+.svg-scroll > svg {
+  display: block;
+}
+
+/* Diagrams that may shrink with the page */
+.svg-fluid {
+  width: 100%;
+  max-width: 760px;
+  height: auto;
+}
+
+.svg-card {
+  max-width: 420px;
+}
+
+/* ---------- SVG drawing styles ---------- */
+
+.hsvg text {
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* browser frame */
+.hsvg .sv-frame { fill: #ffffff; stroke: var(--border); stroke-width: 1.5; }
+.hsvg .sv-bar { fill: #eef2f7; }
+.hsvg .sv-barline { stroke: var(--border); stroke-width: 1; }
+.hsvg .sv-dot { fill: #cbd5e1; }
+.hsvg .sv-urlbox { fill: #ffffff; stroke: var(--border); }
+.hsvg .sv-url { fill: var(--slate); font-size: 11px; }
+
+/* breadcrumb chips */
+.hsvg .sv-crumb { fill: var(--navy-tint); stroke: #c3d7ee; }
+.hsvg .sv-crumb-t { fill: var(--navy); font-size: 11.5px; font-weight: 600; }
+.hsvg .sv-final { fill: var(--navy); stroke: var(--navy); }
+.hsvg .sv-final-t { fill: #ffffff; font-size: 11.5px; font-weight: 600; }
+.hsvg .sv-arr { fill: #94a3b8; font-size: 13px; font-weight: 700; }
+
+/* file chips + extension tags */
+.hsvg .sv-chip { fill: #f8fafc; stroke: var(--border); }
+.hsvg .sv-chip-t { fill: #1e293b; font-size: 11.5px; font-weight: 600; }
+.hsvg .sv-ext-t { fill: #ffffff; font-size: 9px; font-weight: 700; letter-spacing: 0.03em; }
+.hsvg .sv-ext-csv { fill: #0e7490; }
+.hsvg .sv-ext-xlsx { fill: #047857; }
+.hsvg .sv-ext-zip { fill: #7c3aed; }
+.hsvg .sv-ext-json { fill: #b45309; }
+
+/* small grey captions */
+.hsvg .sv-note { fill: var(--slate); font-size: 10.5px; }
+
+/* connector lines + arrowheads */
+.hsvg .sv-line { stroke: #94a3b8; stroke-width: 1.5; fill: none; }
+.hsvg .sv-head { fill: #94a3b8; }
+
+/* folder diagram */
+.hsvg .sv-folder { fill: var(--navy-tint); stroke: #b9cfe8; stroke-width: 1.5; }
+.hsvg .sv-fold-t { fill: var(--navy); font-size: 11px; font-weight: 600; }
+.hsvg .sv-file { fill: #ffffff; stroke: var(--border); }
+
+/* platform colour dots (text badges only — no logos) */
+.hsvg .sv-dot-amazon { fill: #f97316; }
+.hsvg .sv-dot-flipkart { fill: #f59e0b; }
+.hsvg .sv-dot-meesho { fill: #ec4899; }
+.hsvg .sv-dot-gst { fill: #2563eb; }
+
+/* app form mockup */
+.hsvg .sv-label { fill: var(--navy); font-size: 12px; font-weight: 600; }
+.hsvg .sv-input { fill: #ffffff; stroke: var(--border); stroke-width: 1.5; }
+.hsvg .sv-mono { fill: #94a3b8; font-size: 11px; font-family: Consolas, "Courier New", monospace; }
+.hsvg .sv-mono-d { fill: #1e293b; font-size: 11px; font-family: Consolas, "Courier New", monospace; }
+.hsvg .sv-btn { fill: var(--navy); }
+.hsvg .sv-btn-t { fill: #ffffff; font-size: 12px; font-weight: 600; }
+.hsvg .sv-btn-o { fill: #ffffff; stroke: var(--navy); stroke-width: 1.5; }
+.hsvg .sv-btn-o-t { fill: var(--navy); font-size: 12px; font-weight: 600; }
+.hsvg .sv-dash { fill: #f8fafc; stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.hsvg .sv-call { fill: #b45309; }
+.hsvg .sv-call-t { fill: #ffffff; font-size: 12px; font-weight: 700; }
+
+/* results card mockup */
+.hsvg .sv-h1 { fill: var(--navy); font-size: 15px; font-weight: 700; }
+.hsvg .sv-sub { fill: var(--slate); font-size: 11px; }
+.hsvg .sv-band { fill: #f8fafc; }
+.hsvg .sv-statl { fill: var(--slate); font-size: 8.5px; letter-spacing: 0.05em; }
+.hsvg .sv-statv { fill: var(--navy); font-size: 13px; font-weight: 700; }
+.hsvg .sv-tno { fill: var(--navy); }
+.hsvg .sv-tno-t { fill: #ffffff; font-size: 9px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* portal stepper */
+.hsvg .sv-stepline { stroke: #cbd5e1; stroke-width: 2; }
+.hsvg .sv-scir { fill: var(--navy); }
+.hsvg .sv-scir-done { fill: var(--ok); }
+.hsvg .sv-snum { fill: #ffffff; font-size: 13px; font-weight: 700; }
+.hsvg .sv-slab { fill: #1e293b; font-size: 11.5px; font-weight: 600; }
+.hsvg .sv-ssub { fill: var(--slate); font-size: 10.5px; }
+
+/* GSTR-3B flow boxes */
+.hsvg .sv-box { fill: #ffffff; stroke: var(--border); stroke-width: 1.5; }
+.hsvg .sv-box-hl { fill: var(--navy-tint); stroke: #c3d7ee; stroke-width: 1.5; }
+.hsvg .sv-box-t { fill: var(--navy); font-size: 12.5px; font-weight: 700; }
+.hsvg .sv-box-s { fill: var(--slate); font-size: 10.5px; }
+
+/* ---------- Chip legend (reuses .chip from style.css) ---------- */
+
+.chip-legend {
+  list-style: none;
+  margin: 0.5rem 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.chip-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.chip-legend .chip {
+  flex-shrink: 0;
+}
+
+/* ---------- Warning / note boxes ---------- */
+
+.help-warn,
+.help-note {
+  border-radius: var(--radius);
+  padding: 0.85rem 1.1rem;
+  margin: 1rem 0 0;
+  font-size: 0.9rem;
+}
+
+.help-warn {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-border);
+  border-left: 4px solid var(--warn);
+}
+
+.help-warn strong {
+  display: block;
+  color: var(--warn);
+  margin-bottom: 0.2rem;
+}
+
+.help-note {
+  background: var(--navy-tint);
+  border: 1px solid #c3d7ee;
+  border-left: 4px solid var(--navy);
+}
+
+.help-note strong {
+  display: block;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+}
+
+/* ---------- FAQ accordions ---------- */
+
+.faq-item {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.faq-item > summary {
+  cursor: pointer;
+  padding: 0.85rem 1.1rem;
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: var(--navy);
+  list-style: none;
+}
+
+.faq-item > summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item > summary::before {
+  content: "\25B8";
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.15s;
+  color: var(--slate);
+}
+
+.faq-item[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.faq-item[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+
+.faq-body {
+  padding: 0.75rem 1.1rem 0.9rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.faq-body p {
+  margin: 0 0 0.5rem;
+}
+
+.faq-body p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-body strong {
+  color: var(--navy);
+}
+
+/* ---------- Disclaimer ---------- */
+
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: #f8fafc;
+  color: var(--slate);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 600px) {
+  .step {
+    padding: 1.1rem;
+  }
+
+  .step-head {
+    gap: 0.75rem;
+  }
+
+  .step-num {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
+
+  .step-head h3 {
+    font-size: 1.05rem;
+  }
+
+  .chip-legend {
+    font-size: 0.85rem;
+  }
+
+  .chip-legend li {
+    align-items: flex-start;
+  }
+}

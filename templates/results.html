@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block title %}Results — GST Helper for E-Commerce{% endblock %}
+
+{% macro money(v) -%}
+{{ "{:,.2f}".format(v|default(0, true)|float) }}
+{%- endmacro %}
+
+{% macro render_card(card, extra_class='') -%}
+<article class="table-card {{ extra_class }}">
+  <div class="card-head">
+    <div class="card-head-top">
+      <span class="table-no">{{ card.table_no|default('') }}</span>
+    </div>
+    <h3 class="card-title">{{ card.title|default('') }}</h3>
+    {% if card.subtitle %}<p class="card-subtitle">{{ card.subtitle }}</p>{% endif %}
+  </div>
+
+  {% set stats = card.stats|default([], true) %}
+  {% if stats %}
+  <div class="card-stats">
+    {% for s in stats %}
+    <div class="card-stat">
+      <span class="stat-label">{{ s.label|default('') }}</span>
+      <span class="stat-value">{{ s.value|default('') }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% set rows = card.rows|default([], true) %}
+  {% if rows %}
+  <details class="card-preview">
+    <summary>Preview data <span class="row-count">({{ rows|length }} row{{ 's' if rows|length != 1 else '' }})</span></summary>
+    <div class="preview-scroll">
+      <table>
+        <thead>
+          <tr>
+            {% for h in card.headers|default([], true) %}<th>{{ h }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for cell in row %}<td>{{ cell }}</td>{% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </details>
+  {% endif %}
+
+  <div class="card-actions">
+    <button type="button" class="btn-copy" data-json-id="json-{{ card.id|default('card') }}">Copy JSON</button>
+    <a class="btn-download" href="/download_file/{{ job_id|default('', true) }}/{{ card.filename|default('', true) }}" download>Download</a>
+  </div>
+  <script type="application/json" id="json-{{ card.id|default('card') }}">{{ card.json_str|default('{}', true)|replace('</', '<\\/')|safe }}</script>
+</article>
+{%- endmacro %}
+
+{% block content %}
+<section class="hero success-hero">
+  <h2>Processing complete</h2>
+  <p>
+    Return period <strong>{{ period|default('—', true) }}</strong>
+    &middot; Seller GSTIN <strong>{{ seller_gstin|default('—', true) }}</strong>
+  </p>
+</section>
+
+{# ---- Guidance banners: errors first, then warnings, then info ---- #}
+{% set guidance_list = guidance|default([], true) %}
+{% if guidance_list %}
+<section class="guidance">
+  {% for lvl in ['error', 'warning', 'info'] %}
+    {% for g in guidance_list %}
+      {% if g.level|default('info') == lvl %}
+      <div class="banner banner-{{ lvl }}" role="alert">
+        <p class="banner-title">{{ g.title|default('') }}</p>
+        {% if g.detail %}<p class="banner-detail">{{ g.detail }}</p>{% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</section>
+{% endif %}
+
+{# ---- Platform status tiles ---- #}
+{% set platform_list = platforms|default([], true) %}
+{% if platform_list %}
+<div class="platform-tiles">
+  {% for p in platform_list %}
+  <div class="platform-tile">
+    <div class="tile-head">
+      <span class="tile-name">{{ p.name|default('Platform') }}</span>
+      <span class="chip chip-{{ p.status|default('missing') }}">{{ p.status|default('missing') }}</span>
+    </div>
+    {% if p.detail %}<p class="tile-detail">{{ p.detail }}</p>{% endif %}
+    <div class="tile-figures">
+      <div class="tile-figure">
+        <span class="fig-label">Records</span>
+        <span class="fig-value">{{ p.records|default(0, true)|int }}</span>
+      </div>
+      <div class="tile-figure">
+        <span class="fig-label">Taxable &#8377;</span>
+        <span class="fig-value">{{ money(p.taxable) }}</span>
+      </div>
+      <div class="tile-figure">
+        <span class="fig-label">Tax &#8377;</span>
+        <span class="fig-value">{{ money(p.tax) }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{# ---- Totals strip ---- #}
+{% set t = totals|default({}, true) %}
+<div class="metrics totals-strip">
+  <div class="metric">
+    <span class="metric-label">Taxable &#8377;</span>
+    <span class="metric-value">{{ money(t.taxable) }}</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">IGST &#8377;</span>
+    <span class="metric-value">{{ money(t.igst) }}</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">CGST &#8377;</span>
+    <span class="metric-value">{{ money(t.cgst) }}</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">SGST &#8377;</span>
+    <span class="metric-value">{{ money(t.sgst) }}</span>
+  </div>
+  <div class="metric">
+    <span class="metric-label">Cess &#8377;</span>
+    <span class="metric-value">{{ money(t.cess) }}</span>
+  </div>
+  <div class="metric metric-total">
+    <span class="metric-label">Total tax &#8377;</span>
+    <span class="metric-value">{{ money(t.tax) }}</span>
+  </div>
+</div>
+
+{# ---- GSTR-1 table cards ---- #}
+{% set all_cards = cards|default([], true) %}
+{% set full_cards = all_cards|selectattr('id', 'equalto', 'full')|list %}
+{% set gstr3b_cards = all_cards|selectattr('id', 'equalto', 'gstr3b')|list %}
+{% set table_cards = all_cards|rejectattr('id', 'equalto', 'full')|rejectattr('id', 'equalto', 'gstr3b')|list %}
+
+{% if table_cards %}
+<h3 class="section-title">GSTR-1 tables</h3>
+<div class="card-grid">
+  {% for card in table_cards %}
+  {{ render_card(card) }}
+  {% endfor %}
+</div>
+{% endif %}
+
+{% if full_cards %}
+<section class="full-json-section">
+  {% for card in full_cards %}
+  {{ render_card(card, 'card-full') }}
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if gstr3b_cards %}
+<h3 class="section-title">GSTR-3B — file after GSTR-1</h3>
+<section class="full-json-section">
+  {% for card in gstr3b_cards %}
+  {{ render_card(card, 'card-full') }}
+  {% endfor %}
+</section>
+{% endif %}
+
+{% if extra_downloads %}
+<section class="panel extra-downloads">
+  <h3>Also available</h3>
+  <ul>
+    {% for item in extra_downloads|default([], true) %}
+    <li><a href="/download_file/{{ job_id }}/{{ item.filename }}">{{ item.label }}</a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if not all_cards %}
+<div class="panel empty-note">No GSTR-1 tables were generated. Check the guidance and file scan below.</div>
+{% endif %}
+
+{# ---- File scan ---- #}
+{% set scan_data = scan|default({}, true) %}
+{% set scan_entries = scan_data.entries|default([], true) %}
+{% if scan_entries %}
+<section class="panel scan-panel">
+  <h3>
+    File scan
+    {% if scan_data.source %}<span class="scan-source">&mdash; {{ scan_data.source }}</span>{% endif %}
+  </h3>
+  <div class="table-wrap table-scroll">
+    <table class="scan-table">
+      <thead>
+        <tr>
+          <th>File</th>
+          <th>Platform</th>
+          <th>Kind</th>
+          <th>Status</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in scan_entries %}
+        <tr>
+          <td class="file-cell">{{ e.name|default('') }}</td>
+          <td>{{ e.platform|default('—', true) }}</td>
+          <td>{{ e.kind|default('—', true) }}</td>
+          <td><span class="chip chip-{{ e.status|default('ignored') }}">{{ e.status|default('ignored') }}</span></td>
+          <td class="scan-msg">{{ e.message|default('') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endif %}
+
+<p class="process-another">
+  <a href="/">&larr; Process another folder</a>
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

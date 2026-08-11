@@ -1,0 +1,158 @@
+/* ---------- Guided tour (pairs with static/js/tour.js) ---------- */
+
+/* Header nav: Help link + "Show guide" button sit next to "Start over" */
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+button.back-link {
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: inherit;
+  color: #fff;
+  cursor: pointer;
+}
+
+button.back-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Overlay + spotlight ---------- */
+
+.gst-tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9990;
+  background: transparent;
+}
+
+/* Used on steps with no target: dim the whole screen */
+.gst-tour-overlay.gst-tour-dimmed {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+/* Cutout: the giant box-shadow dims everything around the target */
+.gst-tour-spotlight {
+  position: fixed;
+  z-index: 9991;
+  border-radius: 10px;
+  pointer-events: none;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.9),
+    0 0 0 9999px rgba(15, 23, 42, 0.6);
+  transition: top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
+}
+
+/* ---------- Floating card ---------- */
+
+.gst-tour-card {
+  position: fixed;
+  z-index: 9992;
+  width: 340px;
+  max-width: calc(100vw - 20px);
+  background: var(--card, #ffffff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: var(--radius, 10px);
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.35);
+  padding: 1rem 1.25rem 1.1rem;
+}
+
+.gst-tour-step {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--slate, #64748b);
+}
+
+.gst-tour-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.05rem;
+  color: var(--navy, #1b365d);
+}
+
+.gst-tour-text {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.gst-tour-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gst-tour-skip {
+  margin-right: auto;
+  background: none;
+  border: none;
+  padding: 0.45rem 0.2rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--slate, #64748b);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.gst-tour-skip:hover {
+  color: var(--navy, #1b365d);
+}
+
+.gst-tour-btn {
+  padding: 0.45rem 1.1rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.gst-tour-back {
+  background: #ffffff;
+  color: var(--navy, #1b365d);
+  border: 1px solid var(--border, #e2e8f0);
+}
+
+.gst-tour-back:hover {
+  background: var(--navy-tint, #e6f0fa);
+  border-color: var(--navy-light, #2d4a6f);
+}
+
+.gst-tour-next {
+  background: var(--navy, #1b365d);
+  color: #ffffff;
+  border: 1px solid var(--navy, #1b365d);
+}
+
+.gst-tour-next:hover {
+  background: var(--navy-light, #2d4a6f);
+}
+
+/* ---------- Small screens: card becomes a bottom sheet ---------- */
+
+@media (max-width: 600px) {
+  .gst-tour-card {
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 14px 14px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding-bottom: 1.4rem;
+  }
+}

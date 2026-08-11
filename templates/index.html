@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}GST Helper for E-Commerce{% endblock %}
+
+{% block content %}
+{% if public_mode %}
+<section class="hero">
+  <h2>Upload your reports folder &mdash; I'll do the rest.</h2>
+  <p>Auto-detects Amazon, Flipkart and Meesho seller tax reports and builds ready-to-upload GSTR-1 <strong>and GSTR-3B</strong> portal JSONs. Your reports are uploaded securely, processed in memory, and auto-deleted within 1 hour.</p>
+</section>
+{% else %}
+<section class="hero">
+  <h2>Point me at your reports folder &mdash; I'll do the rest.</h2>
+  <p>Auto-detects Amazon, Flipkart and Meesho seller tax reports and builds ready-to-upload GSTR-1 <strong>and GSTR-3B</strong> portal JSONs.</p>
+</section>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error" role="alert">{{ error }}</div>
+{% endif %}
+
+<p class="help-link-row">New here? <a href="/help">Read the step-by-step guide</a>.</p>
+
+<form class="process-form" action="/process" method="post" enctype="multipart/form-data" id="processForm">
+  {% if not public_mode %}
+  <div class="folder-panel">
+    <label for="folder_path">Reports folder</label>
+    <div class="folder-row">
+      <input
+        type="text"
+        id="folder_path"
+        name="folder_path"
+        class="folder-input"
+        placeholder="C:\Users\you\Downloads\gst reports june"
+        value="{{ folder_path|default('', true) }}"
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <button type="submit" class="btn-primary" id="submitBtn">Process folder</button>
+    </div>
+    <p class="hint">Drop ALL downloaded platform files there &mdash; zips are fine, no need to extract.</p>
+  </div>
+  {% endif %}
+
+  <div class="picker-panel{% if public_mode %} picker-hero{% endif %}">
+    {% if public_mode %}
+    <label>Choose your reports folder</label>
+    {% else %}
+    <label>&hellip;or browse and upload the folder</label>
+    {% endif %}
+    <div class="picker-row">
+      <button type="button" class="btn-primary btn-folder-picker" id="folderPickerBtn">Browse folder</button>
+      {% if public_mode %}
+      <button type="submit" class="btn-primary" id="submitBtn">Upload &amp; process</button>
+      {% endif %}
+    </div>
+    <input type="file" id="folderInput" webkitdirectory multiple hidden>
+    <p class="hint">Pick the folder with all your downloaded platform files &mdash; zips are fine, no need to extract.</p>
+    <p class="hint">On mobile? Use "upload files manually" below.</p>
+    <p class="picker-summary" id="folderSummary" hidden></p>
+    <details class="picker-files" id="folderFilesDetails" hidden>
+      <summary>Show selected files</summary>
+      <ul class="picker-file-list" id="folderFileList"></ul>
+    </details>
+    <div class="alert alert-error picker-error" id="uploadError" role="alert" hidden></div>
+    <div class="upload-progress" id="uploadProgress" hidden>
+      <div class="upload-progress-track">
+        <div class="upload-progress-fill" id="uploadProgressFill"></div>
+      </div>
+      <p class="upload-progress-text" id="uploadProgressText">Uploading&hellip; 0%</p>
+    </div>
+  </div>
+
+  <div class="option-row">
+    <label for="period">Return period (MMYYYY) &mdash; leave blank to auto-detect</label>
+    <input
+      type="text"
+      id="period"
+      name="period"
+      value="{{ period|default('', true) }}"
+      pattern="\d{6}"
+      maxlength="6"
+      inputmode="numeric"
+      placeholder="e.g. 062026"
+    >
+  </div>
+
+  <details class="manual-upload">
+    <summary>Or upload files manually</summary>
+    <div class="manual-body">
+      <label class="file-drop" data-label="Choose files">
+        <input type="file" id="filesInput" name="files" multiple accept=".csv,.xlsx,.xls,.zip,.json">
+        <span class="file-name" id="filesName">No files chosen</span>
+      </label>
+      <p class="hint">Select every report in one go &mdash; .csv, .xlsx, .xls, .zip and .json are accepted.</p>
+    </div>
+  </details>
+</form>
+
+<section class="help-panel download-guide">
+  <h3>What to download</h3>
+  <div class="guide-grid">
+    <div class="guide-card">
+      <div class="guide-head">
+        <span class="platform-badge amazon">Amazon</span>
+        <span class="guide-path">Seller Central</span>
+      </div>
+      <ul>
+        <li>
+          <span class="guide-path">Tax Document Library</span>
+          <strong>MTR B2C CSV</strong>
+          <span class="guide-note">invoice numbers, Table 13</span>
+        </li>
+        <li>
+          <span class="guide-path">GST Reports page</span>
+          <strong>GST Ready-to-File xlsx</strong>
+          <span class="guide-note">B2CS + B2CL + HSN</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="guide-card">
+      <div class="guide-head">
+        <span class="platform-badge flipkart">Flipkart</span>
+        <span class="guide-path">Seller Hub &rarr; Reports</span>
+      </div>
+      <ul>
+        <li>
+          <span class="guide-path">GST Reports</span>
+          <strong>GSTR return report xlsx</strong>
+          <span class="guide-note">official aggregates + HSN + invoice series</span>
+        </li>
+        <li>
+          <span class="guide-conj">and/or</span>
+          <strong>Sales Report xlsx</strong>
+          <span class="guide-note">needed for credit-note series</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="guide-card">
+      <div class="guide-head">
+        <span class="platform-badge meesho">Meesho</span>
+        <span class="guide-path">Supplier Panel &rarr; Download</span>
+      </div>
+      <ul>
+        <li>
+          <strong>GST Report</strong> zip
+          <span class="guide-note">tcs_sales + tcs_sales_return</span>
+        </li>
+        <li>
+          <strong>Supplier Tax Invoice</strong> zip
+          <span class="guide-note">Tax_invoice_details.xlsx for Table 13</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="guide-card">
+      <div class="guide-head">
+        <span class="platform-badge gstportal">GST Portal</span>
+        <span class="guide-path">for GSTR-3B Table 4 (ITC)</span>
+      </div>
+      <ul>
+        <li>
+          <span class="guide-path">Returns Dashboard &rarr; month &rarr; GSTR-2B &rarr; Download</span>
+          <strong>GENERATE JSON FILE TO DOWNLOAD</strong>
+          <span class="guide-note">your ITC on marketplace commissions &amp; fees &mdash; drop the .json in the same folder</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

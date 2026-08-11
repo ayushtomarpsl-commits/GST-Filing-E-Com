@@ -1,0 +1,25 @@
+# --- App runtime / Python ---
+.jobs/
+__pycache__/
+*.pyc
+.streamlit/
+.venv/
+
+# --- DATA SAFETY: real GST business data. NEVER commit these. ---
+# (Do not use "git add -f" on anything below.)
+tax report/
+flipkart_b2cs_*.csv
+gstr1_*.json
+gstr3b_*.json
+_amazon_upload.xlsx
+*.zip
+# These four were committed in the past — see DEPLOY_GUIDE.md section A
+# for how to untrack them before pushing anywhere public.
+GSTR return report.xlsx
+Sales Report.xlsx
+b2cs_upload.csv
+
+# --- Local scratch scripts ---
+scratch_inspect*.py
+
+.claude/

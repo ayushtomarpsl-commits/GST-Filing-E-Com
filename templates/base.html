@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}GST Helper for E-Commerce{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tour.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-icon">GST</span>
+        <div>
+          <h1>GST Helper for E-Commerce</h1>
+          <p>Amazon · Flipkart · Meesho → GSTR-1</p>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a class="back-link" href="{{ url_for('index') }}">Start over</a>
+        <a class="back-link" id="navHelp" href="{{ url_for('help_page') }}">Help</a>
+        <button class="back-link" id="showGuideBtn" type="button">Show guide</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">{% if public_mode %}Your files are processed in memory and the generated JSONs are deleted automatically within 1 hour. Nothing is stored permanently. This tool is not affiliated with GSTN — always verify numbers before filing.{% else %}Runs locally on this machine — your reports never leave your computer.{% endif %}</div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/tour.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

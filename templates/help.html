@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}Help — GST Helper for E-Commerce{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/help.css') }}">
+
+<section class="hero help-hero">
+  <h2>How to use — step by step</h2>
+  <p>A simple guide for your first filing. Follow the five steps in order. It takes about 20 minutes.</p>
+</section>
+
+<nav class="help-toc" aria-label="Jump to a step">
+  <a href="#step-1">1. Download reports</a>
+  <a href="#step-2">2. One folder</a>
+  <a href="#step-3">3. Process here</a>
+  <a href="#step-4">4. Upload GSTR-1</a>
+  <a href="#step-5">5. GSTR-3B</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+{# ================= STEP 1 ================= #}
+<section class="step" id="step-1">
+  <div class="step-head">
+    <span class="step-num" aria-hidden="true">1</span>
+    <div>
+      <h3>Download your monthly reports</h3>
+      <p class="step-lede">Do this once every month. You need up to 7 files from 4 websites. Menu names can change a little.</p>
+    </div>
+  </div>
+
+  <!-- Amazon -->
+  <div class="platform-block">
+    <div class="platform-line">
+      <span class="platform-badge amazon">Amazon</span>
+      <span class="pb-note">2 files from Seller Central</span>
+    </div>
+    <ul class="mini-list">
+      <li><span class="path">Seller Central → Reports → Tax Document Library → <strong>Merchant Tax Report (MTR) B2C</strong></span> — pick your month. You get a <strong>CSV</strong>. It has the invoice numbers for Table 13.</li>
+      <li><span class="path">Seller Central → GST Reports → <strong>"GST Ready-to-File Reports"</strong> → Download Report</span>. You get an <strong>xlsx</strong>. It has B2CS, B2CL and HSN data.</li>
+    </ul>
+    <div class="svg-scroll">
+      <svg class="hsvg" width="860" height="176" viewBox="0 0 860 176" role="img" aria-labelledby="t-svg-amazon" xmlns="http://www.w3.org/2000/svg">
+        <title id="t-svg-amazon">Amazon: two click paths in Seller Central. One gives the MTR B2C CSV file. One gives the GST Ready-to-File xlsx file.</title>
+        <rect class="sv-frame" x="1" y="1" width="858" height="174" rx="10"/>
+        <path class="sv-bar" d="M11 1 H849 A10 10 0 0 1 859 11 V31 H1 V11 A10 10 0 0 1 11 1 Z"/>
+        <line class="sv-barline" x1="1" y1="31" x2="859" y2="31"/>
+        <circle class="sv-dot" cx="20" cy="16" r="4.5"/><circle class="sv-dot" cx="36" cy="16" r="4.5"/><circle class="sv-dot" cx="52" cy="16" r="4.5"/>
+        <rect class="sv-urlbox" x="72" y="8" width="220" height="16" rx="8"/>
+        <text class="sv-url" x="84" y="19.5">sellercentral.amazon.in</text>
+
+        <!-- Row A: MTR B2C -->
+        <rect class="sv-crumb" x="24" y="52" width="100" height="24" rx="6"/><text class="sv-crumb-t" x="74" y="68" text-anchor="middle">Seller Central</text>
+        <text class="sv-arr" x="136" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="148" y="52" width="68" height="24" rx="6"/><text class="sv-crumb-t" x="182" y="68" text-anchor="middle">Reports</text>
+        <text class="sv-arr" x="228" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="240" y="52" width="150" height="24" rx="6"/><text class="sv-crumb-t" x="315" y="68" text-anchor="middle">Tax Document Library</text>
+        <text class="sv-arr" x="402" y="68" text-anchor="middle">→</text>
+        <rect class="sv-final" x="414" y="52" width="206" height="24" rx="6"/><text class="sv-final-t" x="517" y="68" text-anchor="middle">Merchant Tax Report (MTR) B2C</text>
+        <text class="sv-arr" x="632" y="68" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="644" y="52" width="196" height="26" rx="6"/>
+        <rect class="sv-ext-csv" x="652" y="57" width="34" height="16" rx="3"/><text class="sv-ext-t" x="669" y="68.5" text-anchor="middle">CSV</text>
+        <text class="sv-chip-t" x="694" y="68">MTR B2C (your month)</text>
+        <text class="sv-note" x="644" y="92">Invoice numbers for Table 13</text>
+
+        <!-- Row B: Ready-to-File -->
+        <rect class="sv-crumb" x="24" y="118" width="100" height="24" rx="6"/><text class="sv-crumb-t" x="74" y="134" text-anchor="middle">Seller Central</text>
+        <text class="sv-arr" x="136" y="134" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="148" y="118" width="94" height="24" rx="6"/><text class="sv-crumb-t" x="195" y="134" text-anchor="middle">GST Reports</text>
+        <text class="sv-arr" x="254" y="134" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="266" y="118" width="182" height="24" rx="6"/><text class="sv-crumb-t" x="357" y="134" text-anchor="middle">GST Ready-to-File Reports</text>
+        <text class="sv-arr" x="460" y="134" text-anchor="middle">→</text>
+        <rect class="sv-final" x="472" y="118" width="126" height="24" rx="6"/><text class="sv-final-t" x="535" y="134" text-anchor="middle">Download Report</text>
+        <text class="sv-arr" x="610" y="134" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="622" y="118" width="218" height="26" rx="6"/>
+        <rect class="sv-ext-xlsx" x="630" y="123" width="38" height="16" rx="3"/><text class="sv-ext-t" x="649" y="134.5" text-anchor="middle">XLSX</text>
+        <text class="sv-chip-t" x="676" y="134">GST Ready-to-File report</text>
+        <text class="sv-note" x="622" y="158">B2CS, B2CL and HSN sheets</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Flipkart -->
+  <div class="platform-block">
+    <div class="platform-line">
+      <span class="platform-badge flipkart">Flipkart</span>
+      <span class="pb-note">2 files from Seller Hub</span>
+    </div>
+    <ul class="mini-list">
+      <li><span class="path">Seller Hub → Reports → GST Reports → <strong>GSTR return report</strong></span>. You get an <strong>xlsx</strong> with the official monthly totals and HSN.</li>
+      <li><span class="path">Seller Hub → Reports → <strong>Sales Report</strong></span>. You get an <strong>xlsx</strong>. It is needed for the credit-note series.</li>
+    </ul>
+    <div class="svg-scroll">
+      <svg class="hsvg" width="860" height="176" viewBox="0 0 860 176" role="img" aria-labelledby="t-svg-flipkart" xmlns="http://www.w3.org/2000/svg">
+        <title id="t-svg-flipkart">Flipkart: two click paths in Seller Hub. One gives the GSTR return report xlsx. One gives the Sales Report xlsx.</title>
+        <rect class="sv-frame" x="1" y="1" width="858" height="174" rx="10"/>
+        <path class="sv-bar" d="M11 1 H849 A10 10 0 0 1 859 11 V31 H1 V11 A10 10 0 0 1 11 1 Z"/>
+        <line class="sv-barline" x1="1" y1="31" x2="859" y2="31"/>
+        <circle class="sv-dot" cx="20" cy="16" r="4.5"/><circle class="sv-dot" cx="36" cy="16" r="4.5"/><circle class="sv-dot" cx="52" cy="16" r="4.5"/>
+        <rect class="sv-urlbox" x="72" y="8" width="220" height="16" rx="8"/>
+        <text class="sv-url" x="84" y="19.5">seller.flipkart.com</text>
+
+        <!-- Row A: GSTR return report -->
+        <rect class="sv-crumb" x="24" y="52" width="88" height="24" rx="6"/><text class="sv-crumb-t" x="68" y="68" text-anchor="middle">Seller Hub</text>
+        <text class="sv-arr" x="124" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="136" y="52" width="68" height="24" rx="6"/><text class="sv-crumb-t" x="170" y="68" text-anchor="middle">Reports</text>
+        <text class="sv-arr" x="216" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="228" y="52" width="94" height="24" rx="6"/><text class="sv-crumb-t" x="275" y="68" text-anchor="middle">GST Reports</text>
+        <text class="sv-arr" x="334" y="68" text-anchor="middle">→</text>
+        <rect class="sv-final" x="346" y="52" width="140" height="24" rx="6"/><text class="sv-final-t" x="416" y="68" text-anchor="middle">GSTR return report</text>
+        <text class="sv-arr" x="498" y="68" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="510" y="52" width="210" height="26" rx="6"/>
+        <rect class="sv-ext-xlsx" x="518" y="57" width="38" height="16" rx="3"/><text class="sv-ext-t" x="537" y="68.5" text-anchor="middle">XLSX</text>
+        <text class="sv-chip-t" x="564" y="68">GSTR return report</text>
+        <text class="sv-note" x="510" y="92">Official totals + HSN sheets</text>
+
+        <!-- Row B: Sales Report -->
+        <rect class="sv-crumb" x="24" y="118" width="88" height="24" rx="6"/><text class="sv-crumb-t" x="68" y="134" text-anchor="middle">Seller Hub</text>
+        <text class="sv-arr" x="124" y="134" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="136" y="118" width="68" height="24" rx="6"/><text class="sv-crumb-t" x="170" y="134" text-anchor="middle">Reports</text>
+        <text class="sv-arr" x="216" y="134" text-anchor="middle">→</text>
+        <rect class="sv-final" x="228" y="118" width="98" height="24" rx="6"/><text class="sv-final-t" x="277" y="134" text-anchor="middle">Sales Report</text>
+        <text class="sv-arr" x="338" y="134" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="350" y="118" width="180" height="26" rx="6"/>
+        <rect class="sv-ext-xlsx" x="358" y="123" width="38" height="16" rx="3"/><text class="sv-ext-t" x="377" y="134.5" text-anchor="middle">XLSX</text>
+        <text class="sv-chip-t" x="404" y="134">Sales Report</text>
+        <text class="sv-note" x="350" y="158">Needed for credit-note series</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Meesho -->
+  <div class="platform-block">
+    <div class="platform-line">
+      <span class="platform-badge meesho">Meesho</span>
+      <span class="pb-note">2 zip files from Supplier Panel</span>
+    </div>
+    <ul class="mini-list">
+      <li><span class="path">Supplier Panel → Download → <strong>GST Report</strong></span>. You get a <strong>zip</strong>. Inside it: tcs_sales.xlsx and tcs_sales_return.xlsx.</li>
+      <li><span class="path">Supplier Panel → Download → <strong>Supplier Tax Invoice</strong></span>. You get a <strong>zip</strong>. Inside it: Tax_invoice_details.xlsx.</li>
+    </ul>
+    <div class="svg-scroll">
+      <svg class="hsvg" width="860" height="176" viewBox="0 0 860 176" role="img" aria-labelledby="t-svg-meesho" xmlns="http://www.w3.org/2000/svg">
+        <title id="t-svg-meesho">Meesho: two click paths in the Supplier Panel. One gives the GST Report zip. One gives the Supplier Tax Invoice zip.</title>
+        <rect class="sv-frame" x="1" y="1" width="858" height="174" rx="10"/>
+        <path class="sv-bar" d="M11 1 H849 A10 10 0 0 1 859 11 V31 H1 V11 A10 10 0 0 1 11 1 Z"/>
+        <line class="sv-barline" x1="1" y1="31" x2="859" y2="31"/>
+        <circle class="sv-dot" cx="20" cy="16" r="4.5"/><circle class="sv-dot" cx="36" cy="16" r="4.5"/><circle class="sv-dot" cx="52" cy="16" r="4.5"/>
+        <rect class="sv-urlbox" x="72" y="8" width="220" height="16" rx="8"/>
+        <text class="sv-url" x="84" y="19.5">supplier.meesho.com</text>
+
+        <!-- Row A: GST Report -->
+        <rect class="sv-crumb" x="24" y="52" width="106" height="24" rx="6"/><text class="sv-crumb-t" x="77" y="68" text-anchor="middle">Supplier Panel</text>
+        <text class="sv-arr" x="142" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="154" y="52" width="80" height="24" rx="6"/><text class="sv-crumb-t" x="194" y="68" text-anchor="middle">Download</text>
+        <text class="sv-arr" x="246" y="68" text-anchor="middle">→</text>
+        <rect class="sv-final" x="258" y="52" width="88" height="24" rx="6"/><text class="sv-final-t" x="302" y="68" text-anchor="middle">GST Report</text>
+        <text class="sv-arr" x="358" y="68" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="370" y="52" width="180" height="26" rx="6"/>
+        <rect class="sv-ext-zip" x="378" y="57" width="32" height="16" rx="3"/><text class="sv-ext-t" x="394" y="68.5" text-anchor="middle">ZIP</text>
+        <text class="sv-chip-t" x="418" y="68">GST Report (zip)</text>
+        <text class="sv-note" x="370" y="92">Inside: tcs_sales.xlsx + tcs_sales_return.xlsx</text>
+
+        <!-- Row B: Supplier Tax Invoice -->
+        <rect class="sv-crumb" x="24" y="118" width="106" height="24" rx="6"/><text class="sv-crumb-t" x="77" y="134" text-anchor="middle">Supplier Panel</text>
+        <text class="sv-arr" x="142" y="134" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="154" y="118" width="80" height="24" rx="6"/><text class="sv-crumb-t" x="194" y="134" text-anchor="middle">Download</text>
+        <text class="sv-arr" x="246" y="134" text-anchor="middle">→</text>
+        <rect class="sv-final" x="258" y="118" width="146" height="24" rx="6"/><text class="sv-final-t" x="331" y="134" text-anchor="middle">Supplier Tax Invoice</text>
+        <text class="sv-arr" x="416" y="134" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="428" y="118" width="212" height="26" rx="6"/>
+        <rect class="sv-ext-zip" x="436" y="123" width="32" height="16" rx="3"/><text class="sv-ext-t" x="452" y="134.5" text-anchor="middle">ZIP</text>
+        <text class="sv-chip-t" x="476" y="134">Supplier Tax Invoice (zip)</text>
+        <text class="sv-note" x="428" y="158">Inside: Tax_invoice_details.xlsx</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- GST portal -->
+  <div class="platform-block">
+    <div class="platform-line">
+      <span class="platform-badge gstportal">GST Portal</span>
+      <span class="pb-note">1 file — needed for GSTR-3B ITC</span>
+    </div>
+    <ul class="mini-list">
+      <li><span class="path">services.gst.gov.in → login → Returns Dashboard → select month → GSTR-2B tile → Download → <strong>"GENERATE JSON FILE TO DOWNLOAD"</strong></span>. You get a <strong>.json</strong> file. The app uses it for GSTR-3B Table 4 (ITC).</li>
+    </ul>
+    <div class="svg-scroll">
+      <svg class="hsvg" width="860" height="176" viewBox="0 0 860 176" role="img" aria-labelledby="t-svg-gst" xmlns="http://www.w3.org/2000/svg">
+        <title id="t-svg-gst">GST portal: click path from login to the GSTR-2B tile, then Download, then Generate JSON file to download.</title>
+        <rect class="sv-frame" x="1" y="1" width="858" height="174" rx="10"/>
+        <path class="sv-bar" d="M11 1 H849 A10 10 0 0 1 859 11 V31 H1 V11 A10 10 0 0 1 11 1 Z"/>
+        <line class="sv-barline" x1="1" y1="31" x2="859" y2="31"/>
+        <circle class="sv-dot" cx="20" cy="16" r="4.5"/><circle class="sv-dot" cx="36" cy="16" r="4.5"/><circle class="sv-dot" cx="52" cy="16" r="4.5"/>
+        <rect class="sv-urlbox" x="72" y="8" width="220" height="16" rx="8"/>
+        <text class="sv-url" x="84" y="19.5">services.gst.gov.in</text>
+
+        <!-- Row A -->
+        <rect class="sv-crumb" x="24" y="52" width="140" height="24" rx="6"/><text class="sv-crumb-t" x="94" y="68" text-anchor="middle">services.gst.gov.in</text>
+        <text class="sv-arr" x="176" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="188" y="52" width="56" height="24" rx="6"/><text class="sv-crumb-t" x="216" y="68" text-anchor="middle">Login</text>
+        <text class="sv-arr" x="256" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="268" y="52" width="136" height="24" rx="6"/><text class="sv-crumb-t" x="336" y="68" text-anchor="middle">Returns Dashboard</text>
+        <text class="sv-arr" x="416" y="68" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="428" y="52" width="104" height="24" rx="6"/><text class="sv-crumb-t" x="480" y="68" text-anchor="middle">Select month</text>
+        <path class="sv-line" d="M480 78 L480 96 L54 96 L54 110"/>
+        <polygon class="sv-head" points="49,110 59,110 54,118"/>
+
+        <!-- Row B -->
+        <rect class="sv-crumb" x="24" y="118" width="104" height="24" rx="6"/><text class="sv-crumb-t" x="76" y="134" text-anchor="middle">GSTR-2B tile</text>
+        <text class="sv-arr" x="140" y="134" text-anchor="middle">→</text>
+        <rect class="sv-crumb" x="152" y="118" width="80" height="24" rx="6"/><text class="sv-crumb-t" x="192" y="134" text-anchor="middle">Download</text>
+        <text class="sv-arr" x="244" y="134" text-anchor="middle">→</text>
+        <rect class="sv-final" x="256" y="118" width="258" height="24" rx="6"/><text class="sv-final-t" x="385" y="134" text-anchor="middle">GENERATE JSON FILE TO DOWNLOAD</text>
+        <text class="sv-arr" x="526" y="134" text-anchor="middle">→</text>
+        <rect class="sv-chip" x="538" y="118" width="170" height="26" rx="6"/>
+        <rect class="sv-ext-json" x="546" y="123" width="40" height="16" rx="3"/><text class="sv-ext-t" x="566" y="134.5" text-anchor="middle">JSON</text>
+        <text class="sv-chip-t" x="594" y="134">GSTR-2B JSON</text>
+        <text class="sv-note" x="538" y="158">For GSTR-3B Table 4 (ITC)</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+{# ================= STEP 2 ================= #}
+<section class="step" id="step-2">
+  <div class="step-head">
+    <span class="step-num" aria-hidden="true">2</span>
+    <div>
+      <h3>Put everything in ONE folder</h3>
+      <p class="step-lede">Make one folder on your computer. Move all the files you downloaded into it.</p>
+    </div>
+  </div>
+
+  <div class="svg-scroll">
+    <svg class="hsvg svg-fluid" width="720" height="312" viewBox="0 0 720 312" role="img" aria-labelledby="t-svg-folder" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-folder">One folder holding all seven files: two Amazon files, two Flipkart files, two Meesho zips and one GSTR-2B JSON.</title>
+      <rect class="sv-folder" x="40" y="46" width="180" height="30" rx="8"/>
+      <text class="sv-fold-t" x="56" y="62">one month — one folder</text>
+      <rect class="sv-folder" x="40" y="64" width="640" height="224" rx="10"/>
+
+      <!-- Column 1 -->
+      <rect class="sv-file" x="64" y="84" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-amazon" cx="82" cy="102" r="5"/>
+      <text class="sv-chip-t" x="96" y="106.5">Amazon MTR B2C</text>
+      <rect class="sv-ext-csv" x="306" y="93" width="34" height="18" rx="4"/><text class="sv-ext-t" x="323" y="105.5" text-anchor="middle">CSV</text>
+
+      <rect class="sv-file" x="64" y="132" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-amazon" cx="82" cy="150" r="5"/>
+      <text class="sv-chip-t" x="96" y="154.5">Amazon GST Ready-to-File</text>
+      <rect class="sv-ext-xlsx" x="300" y="141" width="40" height="18" rx="4"/><text class="sv-ext-t" x="320" y="153.5" text-anchor="middle">XLSX</text>
+
+      <rect class="sv-file" x="64" y="180" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-flipkart" cx="82" cy="198" r="5"/>
+      <text class="sv-chip-t" x="96" y="202.5">Flipkart GSTR return report</text>
+      <rect class="sv-ext-xlsx" x="300" y="189" width="40" height="18" rx="4"/><text class="sv-ext-t" x="320" y="201.5" text-anchor="middle">XLSX</text>
+
+      <rect class="sv-file" x="64" y="228" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-flipkart" cx="82" cy="246" r="5"/>
+      <text class="sv-chip-t" x="96" y="250.5">Flipkart Sales Report</text>
+      <rect class="sv-ext-xlsx" x="300" y="237" width="40" height="18" rx="4"/><text class="sv-ext-t" x="320" y="249.5" text-anchor="middle">XLSX</text>
+
+      <!-- Column 2 -->
+      <rect class="sv-file" x="372" y="84" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-meesho" cx="390" cy="102" r="5"/>
+      <text class="sv-chip-t" x="404" y="106.5">Meesho GST Report</text>
+      <rect class="sv-ext-zip" x="614" y="93" width="34" height="18" rx="4"/><text class="sv-ext-t" x="631" y="105.5" text-anchor="middle">ZIP</text>
+
+      <rect class="sv-file" x="372" y="132" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-meesho" cx="390" cy="150" r="5"/>
+      <text class="sv-chip-t" x="404" y="154.5">Meesho Supplier Tax Invoice</text>
+      <rect class="sv-ext-zip" x="614" y="141" width="34" height="18" rx="4"/><text class="sv-ext-t" x="631" y="153.5" text-anchor="middle">ZIP</text>
+
+      <rect class="sv-file" x="372" y="180" width="286" height="36" rx="8"/>
+      <circle class="sv-dot-gst" cx="390" cy="198" r="5"/>
+      <text class="sv-chip-t" x="404" y="202.5">GSTR-2B from the portal</text>
+      <rect class="sv-ext-json" x="608" y="189" width="40" height="18" rx="4"/><text class="sv-ext-t" x="628" y="201.5" text-anchor="middle">JSON</text>
+
+      <text class="sv-note" x="515" y="250" text-anchor="middle">7 files in total — zips stay zipped</text>
+      <text class="sv-note" x="360" y="306" text-anchor="middle">Keep the original file names. Do not mix months.</text>
+    </svg>
+  </div>
+
+  <ul class="mini-list">
+    <li>Zips do <strong>NOT</strong> need extraction. The app opens them itself.</li>
+    <li>Do <strong>not</strong> mix months in one folder. The tool excludes wrong-month files and warns you.</li>
+    <li>Keep the original file names. Do not rename the downloads.</li>
+  </ul>
+</section>
+
+{# ================= STEP 3 ================= #}
+<section class="step" id="step-3">
+  <div class="step-head">
+    <span class="step-num" aria-hidden="true">3</span>
+    <div>
+      <h3>Process in this app</h3>
+      <p class="step-lede">Give the app your files. It reads them and builds the portal JSONs for you.</p>
+    </div>
+  </div>
+
+  <div class="svg-scroll">
+    {% if public_mode %}
+    <svg class="hsvg svg-fluid" width="720" height="234" viewBox="0 0 720 234" role="img" aria-labelledby="t-svg-form" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-form">Picture of the app form. Number 1 marks the Browse folder button, number 2 marks the period box, number 3 marks the Upload and process button.</title>
+      <rect class="sv-frame" x="1" y="1" width="718" height="232" rx="10"/>
+      <text class="sv-label" x="28" y="40">Choose your reports folder</text>
+      <rect class="sv-btn" x="28" y="50" width="180" height="38" rx="8"/>
+      <text class="sv-btn-t" x="118" y="73" text-anchor="middle">Browse folder</text>
+      <circle class="sv-call" cx="216" cy="50" r="11"/><text class="sv-call-t" x="216" y="54.5" text-anchor="middle">1</text>
+      <rect class="sv-btn" x="248" y="50" width="200" height="38" rx="8"/>
+      <text class="sv-btn-t" x="348" y="73" text-anchor="middle">Upload &amp; process</text>
+      <circle class="sv-call" cx="456" cy="50" r="11"/><text class="sv-call-t" x="456" y="54.5" text-anchor="middle">3</text>
+
+      <text class="sv-label" x="28" y="126">Return period (MMYYYY)</text>
+      <rect class="sv-input" x="28" y="136" width="150" height="34" rx="6"/>
+      <text class="sv-mono-d" x="42" y="157">062026</text>
+      <circle class="sv-call" cx="192" cy="153" r="11"/><text class="sv-call-t" x="192" y="157.5" text-anchor="middle">2</text>
+      <text class="sv-note" x="220" y="157">leave blank — the app finds the month itself</text>
+
+      <rect class="sv-dash" x="28" y="190" width="300" height="32" rx="8"/>
+      <text class="sv-label" x="178" y="210" text-anchor="middle">Or upload files manually — Choose files</text>
+    </svg>
+    {% else %}
+    <svg class="hsvg svg-fluid" width="720" height="234" viewBox="0 0 720 234" role="img" aria-labelledby="t-svg-form" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-form">Picture of the app form. Number 1 marks the folder box, number 2 marks the period box, number 3 marks the Process button.</title>
+      <rect class="sv-frame" x="1" y="1" width="718" height="232" rx="10"/>
+      <text class="sv-label" x="28" y="40">Reports folder</text>
+      <rect class="sv-input" x="28" y="50" width="468" height="38" rx="8"/>
+      <text class="sv-mono" x="42" y="73">C:\Users\you\Downloads\gst reports june</text>
+      <circle class="sv-call" cx="478" cy="69" r="11"/><text class="sv-call-t" x="478" y="73.5" text-anchor="middle">1</text>
+      <rect class="sv-btn" x="512" y="50" width="148" height="38" rx="8"/>
+      <text class="sv-btn-t" x="586" y="73" text-anchor="middle">Process folder</text>
+      <circle class="sv-call" cx="668" cy="50" r="11"/><text class="sv-call-t" x="668" y="54.5" text-anchor="middle">3</text>
+
+      <text class="sv-label" x="28" y="126">Return period (MMYYYY)</text>
+      <rect class="sv-input" x="28" y="136" width="150" height="34" rx="6"/>
+      <text class="sv-mono-d" x="42" y="157">062026</text>
+      <circle class="sv-call" cx="192" cy="153" r="11"/><text class="sv-call-t" x="192" y="157.5" text-anchor="middle">2</text>
+      <text class="sv-note" x="220" y="157">leave blank — the app finds the month itself</text>
+
+      <rect class="sv-dash" x="28" y="190" width="300" height="32" rx="8"/>
+      <text class="sv-label" x="178" y="210" text-anchor="middle">Or upload files manually — Choose files</text>
+    </svg>
+    {% endif %}
+  </div>
+
+  <ol class="big-steps">
+    {% if public_mode %}
+    <li><strong>Choose your folder.</strong> Click "Browse folder" and pick the folder with all your downloaded files. The app shows which files it will upload. Then click "Upload &amp; process".</li>
+    {% else %}
+    <li><strong>Paste your folder path.</strong> Copy the path of your folder from Step 2. Paste it in the "Reports folder" box. Or click "Browse folder" and pick the folder.</li>
+    {% endif %}
+    <li><strong>Type the month (optional).</strong> Use MMYYYY, like 062026 for June 2026. Or leave it blank — the app finds the month itself.</li>
+    <li><strong>Click Process.</strong> Wait a few seconds. The results page opens.</li>
+  </ol>
+
+  <h4 class="sub-title">How to read the results page</h4>
+  <ul class="chip-legend">
+    <li><span class="chip chip-error">error</span> Every red message = something to fix. Fix it and process again.</li>
+    <li><span class="chip chip-warning">warning</span> Yellow = read it and decide. The app still made the files.</li>
+    <li><span class="chip chip-ok">ok</span> Green = all good.</li>
+  </ul>
+  <ul class="mini-list">
+    <li>The <strong>platform tiles</strong> show what was found and what is missing for Amazon, Flipkart and Meesho.</li>
+    <li>The <strong>File scan</strong> table at the bottom shows every file. It tells you why each file was used or skipped.</li>
+    <li>Each <strong>result card</strong> is one GSTR-1 table. Use <strong>Copy JSON</strong> or <strong>Download</strong> on the card you need.</li>
+  </ul>
+
+  <div class="svg-scroll">
+    <svg class="hsvg svg-fluid svg-card" width="420" height="224" viewBox="0 0 420 224" role="img" aria-labelledby="t-svg-card" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-card">Picture of one result card. It shows the table name, row count, taxable value, tax value, and two buttons: Copy JSON and Download.</title>
+      <rect class="sv-frame" x="1" y="1" width="418" height="222" rx="10"/>
+      <rect class="sv-tno" x="20" y="16" width="66" height="18" rx="4"/>
+      <text class="sv-tno-t" x="53" y="28.5" text-anchor="middle">TABLE 7</text>
+      <text class="sv-h1" x="20" y="58">Table 7 — B2CS</text>
+      <text class="sv-sub" x="20" y="76">State-wise B2C sales summary</text>
+      <rect class="sv-band" x="1" y="88" width="418" height="54"/>
+      <line class="sv-barline" x1="1" y1="88" x2="419" y2="88"/>
+      <line class="sv-barline" x1="1" y1="142" x2="419" y2="142"/>
+      <text class="sv-statl" x="20" y="106">ROWS</text><text class="sv-statv" x="20" y="126">42</text>
+      <text class="sv-statl" x="120" y="106">TAXABLE ₹</text><text class="sv-statv" x="120" y="126">1,23,456.00</text>
+      <text class="sv-statl" x="270" y="106">TAX ₹</text><text class="sv-statv" x="270" y="126">22,222.40</text>
+      <rect class="sv-btn-o" x="20" y="164" width="112" height="34" rx="6"/>
+      <text class="sv-btn-o-t" x="76" y="185.5" text-anchor="middle">Copy JSON</text>
+      <rect class="sv-btn" x="148" y="164" width="112" height="34" rx="6"/>
+      <text class="sv-btn-t" x="204" y="185.5" text-anchor="middle">Download</text>
+    </svg>
+  </div>
+</section>
+
+{# ================= STEP 4 ================= #}
+<section class="step" id="step-4">
+  <div class="step-head">
+    <span class="step-num" aria-hidden="true">4</span>
+    <div>
+      <h3>Upload GSTR-1 on the GST portal</h3>
+      <p class="step-lede">Take the full JSON file from Step 3 and upload it on the portal.</p>
+    </div>
+  </div>
+
+  <div class="svg-scroll">
+    <svg class="hsvg" width="1080" height="118" viewBox="0 0 1080 118" role="img" aria-labelledby="t-svg-stepper" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-stepper">Seven steps on the GST portal: login, Returns Dashboard, Prepare Offline, upload the JSON, wait, check the tables, then submit and file.</title>
+      <line class="sv-stepline" x1="60" y1="40" x2="1020" y2="40"/>
+      <circle class="sv-scir" cx="60" cy="40" r="17"/><text class="sv-snum" x="60" y="45.5" text-anchor="middle">1</text>
+      <circle class="sv-scir" cx="220" cy="40" r="17"/><text class="sv-snum" x="220" y="45.5" text-anchor="middle">2</text>
+      <circle class="sv-scir" cx="380" cy="40" r="17"/><text class="sv-snum" x="380" y="45.5" text-anchor="middle">3</text>
+      <circle class="sv-scir" cx="540" cy="40" r="17"/><text class="sv-snum" x="540" y="45.5" text-anchor="middle">4</text>
+      <circle class="sv-scir" cx="700" cy="40" r="17"/><text class="sv-snum" x="700" y="45.5" text-anchor="middle">5</text>
+      <circle class="sv-scir" cx="860" cy="40" r="17"/><text class="sv-snum" x="860" y="45.5" text-anchor="middle">6</text>
+      <circle class="sv-scir-done" cx="1020" cy="40" r="17"/><text class="sv-snum" x="1020" y="45.5" text-anchor="middle">7</text>
+      <text class="sv-slab" x="60" y="80" text-anchor="middle">Login</text>
+      <text class="sv-ssub" x="60" y="96" text-anchor="middle">services.gst.gov.in</text>
+      <text class="sv-slab" x="220" y="80" text-anchor="middle">Returns Dashboard</text>
+      <text class="sv-ssub" x="220" y="96" text-anchor="middle">pick month → GSTR-1</text>
+      <text class="sv-slab" x="380" y="80" text-anchor="middle">PREPARE OFFLINE</text>
+      <text class="sv-ssub" x="380" y="96" text-anchor="middle">click the button</text>
+      <text class="sv-slab" x="540" y="80" text-anchor="middle">Upload the JSON</text>
+      <text class="sv-ssub" x="540" y="96" text-anchor="middle">gstr1_full_(month).json</text>
+      <text class="sv-slab" x="700" y="80" text-anchor="middle">Wait</text>
+      <text class="sv-ssub" x="700" y="96" text-anchor="middle">portal takes a few minutes</text>
+      <text class="sv-slab" x="860" y="80" text-anchor="middle">Check tables</text>
+      <text class="sv-ssub" x="860" y="96" text-anchor="middle">5, 7, 12, 13 vs app cards</text>
+      <text class="sv-slab" x="1020" y="80" text-anchor="middle">Submit + File</text>
+      <text class="sv-ssub" x="1020" y="96" text-anchor="middle">EVC or DSC</text>
+    </svg>
+  </div>
+
+  <ol class="big-steps">
+    <li>Login at <strong>services.gst.gov.in</strong>.</li>
+    <li>Go to <strong>Returns Dashboard</strong> → pick your month → open the <strong>GSTR-1</strong> tile.</li>
+    <li>Click <strong>"PREPARE OFFLINE"</strong>.</li>
+    <li>Click <strong>Upload → Choose File</strong>. Select the downloaded <strong>gstr1_full_&lt;month&gt;.json</strong> file.</li>
+    <li><strong>Wait.</strong> The portal takes a few minutes to process the file.</li>
+    <li>Go back to the GSTR-1 <strong>online view</strong>. Check the tables against the app's cards: <strong>Table 5</strong> (B2CL), <strong>Table 7</strong> (B2CS), <strong>Table 12</strong> (HSN), <strong>Table 13</strong> (Documents).</li>
+    <li>Click <strong>Generate Summary</strong> → <strong>Submit</strong> → <strong>File</strong> with EVC or DSC.</li>
+  </ol>
+
+  <div class="help-warn" role="alert">
+    <strong>Be careful before you file.</strong>
+    Uploading the JSON replaces the matching sections already on the portal for that month.
+    Check every table first. Filing is final — it cannot be undone.
+  </div>
+</section>
+
+{# ================= STEP 5 ================= #}
+<section class="step" id="step-5">
+  <div class="step-head">
+    <span class="step-num" aria-hidden="true">5</span>
+    <div>
+      <h3>GSTR-3B — after GSTR-1 is filed</h3>
+      <p class="step-lede">The portal makes a draft GSTR-3B for you. Your job is to check it.</p>
+    </div>
+  </div>
+
+  <div class="svg-scroll">
+    <svg class="hsvg svg-fluid" width="760" height="190" viewBox="0 0 760 190" role="img" aria-labelledby="t-svg-3b" xmlns="http://www.w3.org/2000/svg">
+      <title id="t-svg-3b">Your filed GSTR-1 and your GSTR-2B flow into the portal's auto-made GSTR-3B draft. You check the draft against the app's GSTR-3B card.</title>
+      <rect class="sv-box" x="24" y="24" width="160" height="48" rx="8"/>
+      <text class="sv-box-t" x="104" y="45" text-anchor="middle">GSTR-1 — filed</text>
+      <text class="sv-box-s" x="104" y="61" text-anchor="middle">you did this in Step 4</text>
+      <rect class="sv-box" x="24" y="112" width="160" height="48" rx="8"/>
+      <text class="sv-box-t" x="104" y="133" text-anchor="middle">GSTR-2B</text>
+      <text class="sv-box-s" x="104" y="149" text-anchor="middle">portal makes it</text>
+      <path class="sv-line" d="M184 48 H226 V86 H258"/>
+      <polygon class="sv-head" points="258,81 258,91 266,86"/>
+      <path class="sv-line" d="M184 136 H226 V102 H258"/>
+      <polygon class="sv-head" points="258,97 258,107 266,102"/>
+      <rect class="sv-box-hl" x="268" y="68" width="200" height="52" rx="8"/>
+      <text class="sv-box-t" x="368" y="90" text-anchor="middle">GSTR-3B draft</text>
+      <text class="sv-box-s" x="368" y="106" text-anchor="middle">auto-made by the portal</text>
+      <path class="sv-line" d="M468 94 H538"/>
+      <polygon class="sv-head" points="538,89 538,99 546,94"/>
+      <rect class="sv-box" x="548" y="68" width="188" height="52" rx="8"/>
+      <text class="sv-box-t" x="642" y="90" text-anchor="middle">Check with the app</text>
+      <text class="sv-box-s" x="642" y="106" text-anchor="middle">3.1(a) · 3.2 · Table 4</text>
+      <text class="sv-note" x="380" y="180" text-anchor="middle">Also accept your TCS credit: Services → Returns → "TDS and TCS credit received"</text>
+    </svg>
+  </div>
+
+  <ol class="big-steps">
+    <li>File GSTR-1 first (Step 4). The portal then <strong>auto-drafts GSTR-3B</strong> from your GSTR-1 and GSTR-2B.</li>
+    <li>Open the app's <strong>GSTR-3B card</strong>. Check each table value on the portal: <strong>3.1(a)</strong> outward supplies, <strong>3.2</strong> state-wise supplies, and <strong>Table 4</strong> ITC.</li>
+    <li>The app's JSON can also be used with the <strong>GSTR-3B offline utility</strong>.</li>
+    <li>Accept your TCS credit separately: <span class="path">Services → Returns → <strong>"TDS and TCS credit received"</strong></span>.</li>
+  </ol>
+
+  <div class="help-note">
+    <strong>No GSTR-2B JSON given?</strong>
+    Then the app leaves Table 4 out on purpose. Use the portal's auto-drafted ITC instead.
+  </div>
+</section>
+
+{# ================= FAQ ================= #}
+<section class="step faq-section" id="faq">
+  <div class="step-head">
+    <span class="step-num step-num-faq" aria-hidden="true">?</span>
+    <div>
+      <h3>Common questions</h3>
+      <p class="step-lede">Click a question to see the answer.</p>
+    </div>
+  </div>
+
+  <details class="faq-item">
+    <summary>The app excluded my file and said "wrong month"</summary>
+    <div class="faq-body">
+      <p>That file belongs to a different month. The app keeps one month per run, so your JSON stays clean.</p>
+      <p>Move files from other months to another folder. Then process again. Check the File scan table to see which file was excluded.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>A state row is negative — is that a problem?</summary>
+    <div class="faq-body">
+      <p>This happens when returns were more than sales in that state for that month. The app shows a yellow warning for it.</p>
+      <p>Check the row and your return data first. If the portal does not accept the negative value, talk to your tax advisor about adjusting it in a later month.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>HSN tax was corrected — why?</summary>
+    <div class="faq-body">
+      <p>Platform HSN sheets sometimes show gross tax on free promo shipments. The tax looks too big for the taxable value.</p>
+      <p>The app fixes it: tax = taxable value × rate. It also tells you when it did this, so you can check.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Which file gives invoice numbers for Table 13?</summary>
+    <div class="faq-body">
+      <p>Amazon: the <strong>MTR B2C CSV</strong> from the Tax Document Library.</p>
+      <p>Meesho: <strong>Tax_invoice_details.xlsx</strong>, inside the Supplier Tax Invoice zip.</p>
+      <p>Flipkart: the <strong>Sales Report</strong> xlsx is needed for the credit-note series.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Is my data safe?</summary>
+    <div class="faq-body">
+      {% if public_mode %}
+      <p>Your files are processed in memory on the server. They are auto-deleted within 1 hour. They are used only to build your JSON files.</p>
+      {% else %}
+      <p>Yes. Everything stays on your computer. The app runs locally. Your reports never leave your machine.</p>
+      {% endif %}
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Do I need to extract the zip files?</summary>
+    <div class="faq-body">
+      <p>No. Put the zips in the folder as they are. The app opens them itself.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>The portal shows different totals than the app</summary>
+    <div class="faq-body">
+      <p>First read the yellow warnings on the results page. They often explain the difference.</p>
+      <p>Then check the File scan table. Make sure every platform file was included and none was skipped. Fix and process again if needed.</p>
+    </div>
+  </details>
+</section>
+
+<div class="disclaimer">
+  This tool prepares data to help you. You are responsible for what you file.
+  When in doubt, ask your tax advisor.
+</div>
+{% endblock %}
