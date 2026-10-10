@@ -31,6 +31,7 @@ KIND_INFO = {
     "meesho_returns": ("Meesho", "GST report — TCS sales returns"),
     "meesho_invoices": ("Meesho", "Supplier Tax Invoice details — invoice/credit-note series"),
     "gstr2b": ("GST Portal", "GSTR-2B auto-drafted ITC statement (JSON) — fills GSTR-3B Table 4"),
+    "portal_error_report": ("GST Portal", "Error report from a previous GSTR-1 upload — checked against this build"),
     "ignored": ("—", "Ignored"),
     "unknown": ("—", "Not recognized"),
 }
@@ -236,6 +237,12 @@ def _detect_json(name: str, data: bytes) -> DetectedFile:
         rtnprd = str(inner.get("rtnprd", ""))
         hint = rtnprd if _PERIOD_RE.fullmatch(rtnprd) else _period_from_filename(name)
         return DetectedFile(name, "gstr2b", data, period_hint=hint)
+
+    # Portal "Processed with Error" report from a previous upload attempt.
+    if isinstance(root.get("error_report"), dict):
+        fp = str(root.get("fp", ""))
+        hint = fp if _PERIOD_RE.fullmatch(fp) else _period_from_filename(name)
+        return DetectedFile(name, "portal_error_report", data, period_hint=hint)
 
     # This tool's own outputs, if the user keeps them in the same folder.
     if {"gstin", "fp", "hash"} <= set(root):

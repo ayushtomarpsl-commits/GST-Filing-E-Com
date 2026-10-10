@@ -235,6 +235,32 @@ def main(folder: Path) -> int:
         [HsnRow("170114", "PCS", 1, 100.0, 0, 0, 0, 0, 5.0)], "X")
     check("missing tax warns, not guessed", (rows[0].iamt, len(msgs)), (0, 1))
 
+    # ---------------- 6. Net-negative home state ----------------
+    # Real Meesho case (Sep 2026): UP returns exceeded UP sales, so 3.1(a)
+    # taxable is below the 3.2 inter-state slice — valid, not an error.
+    print("\n== 6. 3.2 vs 3.1(a) with a net-negative home state ==")
+    from gst3b_builder import build_gstr3b_payload, compute_31a_and_32, validate_gstr3b
+
+    b2cs = [
+        {"sply_ty": "INTER", "pos": "10", "rt": 5, "txval": 1000, "iamt": 50},
+        {"sply_ty": "INTRA", "pos": "09", "rt": 5, "txval": -200,
+         "camt": -5, "samt": -5},
+    ]
+    t31a, inter = compute_31a_and_32(b2cs, [])
+    errs, _ = validate_gstr3b(build_gstr3b_payload("09BXDPT0789G1ZZ", "092026",
+                                                   t31a, inter, None), 800, 40)
+    check("negative home state is not a 3.2 error", errs, [])
+    bad = build_gstr3b_payload("09BXDPT0789G1ZZ", "092026", t31a,
+                               [{"pos": "10", "txval": 1000, "iamt": 60}], None)
+    errs, _ = validate_gstr3b(bad, 800, 40)
+    check("3.2 IGST above 3.1(a) still an error",
+          any("Table 3.2" in e for e in errs), True)
+
+    # Portal RET191240: Daman & Diu (25) merged into 26 in 2020.
+    from gst_parsers import normalize_state_to_code
+    check("DAMAN & DIU -> 26", normalize_state_to_code("DAMAN & DIU"), "26")
+    check("25-Daman & Diu -> 26", normalize_state_to_code("25-Daman & Diu"), "26")
+
     print()
     if FAILURES:
         print(f"FAILED — {len(FAILURES)} mismatch(es)")

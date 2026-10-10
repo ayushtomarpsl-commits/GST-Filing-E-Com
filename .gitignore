@@ -11,6 +11,7 @@ tax report/
 flipkart_b2cs_*.csv
 gstr1_*.json
 gstr3b_*.json
+*errorReport*.json
 _amazon_upload.xlsx
 *.zip
 # These four were committed in the past — see DEPLOY_GUIDE.md section A

@@ -49,6 +49,7 @@ from gst_parsers import (
     ReportParsers,
     TaxRecord,
 )
+from gst_portal_rules import check_gstr1_rules, explain_portal_error
 
 DOC_NUM_INVOICE = 1      # "Invoices for outward supply"
 DOC_NUM_DEBIT = 4        # "Debit Note"
@@ -306,11 +307,13 @@ def validate_full_payload(payload: Dict[str, Any]) -> Tuple[List[str], List[str]
     for key in ("gstin", "fp", "version", "hash"):
         if key not in payload:
             errors.append(f"Missing root key {key!r}.")
-    if len(str(payload.get("gstin", ""))) != 15:
-        errors.append("GSTIN must be 15 characters.")
     fp = str(payload.get("fp", ""))
     if not (len(fp) == 6 and fp.isdigit() and 1 <= int(fp[:2]) <= 12):
         errors.append(f"Return period {fp!r} is not MMYYYY.")
+    # Portal master-data rules (valid POS/rates/UQC, supply type, doc numbers...)
+    rule_errors, rule_warnings = check_gstr1_rules(payload)
+    errors.extend(rule_errors)
+    warnings.extend(rule_warnings)
 
     seen: set = set()
     for i, row in enumerate(payload.get("b2cs", [])):
@@ -382,6 +385,86 @@ def validate_full_payload(payload: Dict[str, Any]) -> Tuple[List[str], List[str]
                 "cross-checks these. Verify before filing."
             )
     return errors, warnings
+
+
+_ROW_KEYS = {
+    "b2cs": ("pos", "rt", "sply_ty"),
+    "b2cl": ("pos", "inum"),
+    "hsn": ("hsn_sc", "uqc", "rt"),
+    "doc_issue": ("from",),
+}
+
+
+def _flatten_errors(node: Any, ctx: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Walk a portal error-report section and return each erroring row with the
+    identifying fields of its parents (e.g. B2CL pos + invoice number)."""
+    found: List[Dict[str, Any]] = []
+    if isinstance(node, list):
+        for item in node:
+            found.extend(_flatten_errors(item, ctx))
+    elif isinstance(node, dict):
+        here = {**ctx, **{k: v for k, v in node.items() if not isinstance(v, (dict, list))}}
+        if "error_msg" in node or "error_cd" in node:
+            found.append(here)
+        for v in node.values():
+            if isinstance(v, (dict, list)):
+                found.extend(_flatten_errors(v, here))
+    return found
+
+
+def _same(a: Any, b: Any) -> bool:
+    """Equal as text, or as numbers (portal echoes rt 5 where we wrote 5.0)."""
+    if str(a) == str(b):
+        return True
+    try:
+        return abs(float(a) - float(b)) < 1e-6
+    except (TypeError, ValueError):
+        return False
+
+
+def _payload_rows(payload: Dict[str, Any], section: str) -> List[Dict[str, Any]]:
+    if section == "b2cs":
+        return payload.get("b2cs", [])
+    if section == "b2cl":
+        return [{"pos": g.get("pos"), **inv} for g in payload.get("b2cl", [])
+                for inv in g.get("inv", [])]
+    if section == "hsn":
+        return payload.get("hsn", {}).get("hsn_b2c", [])
+    if section == "doc_issue":
+        return [d for det in payload.get("doc_issue", {}).get("doc_det", [])
+                for d in det.get("docs", [])]
+    return []
+
+
+def review_portal_error_report(data: bytes, payload: Dict[str, Any]) -> List[Guidance]:
+    """Explain each row the portal rejected and say whether THIS build still has it."""
+    try:
+        report = json.loads(data.decode("utf-8-sig"))
+    except Exception as exc:
+        return [Guidance("warning", "Portal error report unreadable", str(exc))]
+    out: List[Guidance] = []
+    for section, body in (report.get("error_report") or {}).items():
+        keys = _ROW_KEYS.get(section)
+        current = _payload_rows(payload, section)
+        for err in _flatten_errors(body, {}):
+            code, msg = str(err.get("error_cd", "")), str(err.get("error_msg", ""))
+            ident = ", ".join(f"{k}={err[k]}" for k in (keys or ()) if k in err)
+            if not keys:
+                level, status = "warning", "Cannot auto-verify this section — check it manually."
+            elif any(all(_same(r.get(k), err.get(k)) for k in keys if k in err)
+                     for r in current):
+                level, status = "error", "STILL PRESENT in this build — fix before uploading again."
+            else:
+                level, status = "info", "FIXED in this build — upload the newly generated JSON."
+            out.append(Guidance(
+                level,
+                f"Portal rejected {section.upper()} row ({code or 'no code'})",
+                f"{msg} [{ident or 'row details in report'}]\n"
+                f"What it means: {explain_portal_error(code, msg)}\n{status}"))
+    if not out:
+        out.append(Guidance("info", "Portal error report has no row errors",
+                            "The report lists no rejected rows."))
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -730,6 +813,9 @@ def build(detected: List[DetectedFile], requested_period: str = "") -> BuildResu
         guidance.append(Guidance("error", "Validation failed", e))
     for w in val_warnings:
         guidance.append(Guidance("warning", "Check before filing", w))
+    if "portal_error_report" in active:
+        guidance.extend(review_portal_error_report(
+            active["portal_error_report"][0].data, payload_full))
 
     # ------------------------------------------------- GSTR-3B (filed after GSTR-1)
     itc: Optional[Gstr2bResult] = None
@@ -1004,4 +1090,5 @@ KINDS_TITLE = {
     "meesho_returns": "Meesho GST returns",
     "meesho_invoices": "Meesho invoice details",
     "gstr2b": "GSTR-2B (ITC statement)",
+    "portal_error_report": "GST portal error report",
 }

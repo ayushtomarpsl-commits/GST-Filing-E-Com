@@ -13,6 +13,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import pandas as pd
 
 from gst_parsers import TaxRecord, normalize_state_to_code, rate_to_percent
+from gst_portal_rules import VALID_RATES
 
 
 def _normalize_headers(df: pd.DataFrame) -> pd.DataFrame:
@@ -26,7 +27,7 @@ def _normalize_headers(df: pd.DataFrame) -> pd.DataFrame:
 
 FLIPKART_ECO_GSTIN_DEFAULT = "29AAACF1435D1Z5"
 B2CL_THRESHOLD = 100000.0
-KNOWN_GST_RATES = (0.0, 0.1, 0.25, 1.0, 1.5, 3.0, 5.0, 6.0, 7.5, 12.0, 18.0, 28.0)
+KNOWN_GST_RATES = VALID_RATES  # includes the 40% slab (GST 2.0, 22-Sep-2025)
 
 DELIVERY_STATE_COL = "Customer's Delivery State"
 

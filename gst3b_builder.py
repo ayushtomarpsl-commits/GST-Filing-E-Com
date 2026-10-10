@@ -19,6 +19,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
+from gst_portal_rules import check_gstr3b_pos
+
 TAX_HEADS = ("iamt", "camt", "samt", "csamt")
 
 
@@ -353,11 +355,15 @@ def validate_gstr3b(payload: Dict[str, Any],
     inter = payload.get("inter_sup", {}).get("unreg_details", [])
     inter_txval = sum(_r2(r["txval"]) for r in inter)
     inter_igst = sum(_r2(r["iamt"]) for r in inter)
-    if inter and (inter_txval - _r2(det["txval"]) > 0.02
+    # A net-negative home state (intra returns > sales) legitimately pulls the
+    # 3.1(a) taxable below the 3.2 inter-state slice; IGST is still a hard check.
+    intra_negative = _r2(det["camt"]) + _r2(det["samt"]) < 0
+    if inter and ((not intra_negative and inter_txval - _r2(det["txval"]) > 0.02)
                   or inter_igst - _r2(det["iamt"]) > 0.02):
         errors.append(
             "Table 3.2 totals exceed Table 3.1(a) — impossible; investigate."
         )
+    errors.extend(check_gstr3b_pos(payload))
     for r in inter:
         if _r2(r["txval"]) < 0:
             warnings.append(

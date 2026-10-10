@@ -8,6 +8,8 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
+from gst_portal_rules import RETIRED_POS, VALID_POS
+
 # GST Constants
 GSTR_VERSION = "GST3.2.4"
 PORTAL_JSON_TYP = "OE"
@@ -99,6 +101,15 @@ FLIPKART_STATE_CODES = {
     "IN-UP": "09",
     "IN-UT": "05",
     "IN-WB": "19",
+    # Newer / alternate ISO codes
+    "IN-TS": "36",
+    "IN-OD": "21",
+    "IN-UK": "05",
+    "IN-CG": "22",
+    "IN-AN": "35",
+    "IN-DH": "26",
+    "IN-DN": "26",
+    "IN-DD": "26",
 }
 
 # Normalize any state string to code
@@ -106,6 +117,7 @@ STATE_NORMALIZED_MAP = {
     "KERALA": "32",
     "TAMILNADU": "33",
     "UTTARPRADESH": "09",
+    "MADHYAPRADESH": "23",
     "CHHATTISGARH": "22",
     "CHATTISGARH": "22",  # Meesho misspelling (single H)
     "ANDHRAPRADESH": "37",
@@ -114,6 +126,8 @@ STATE_NORMALIZED_MAP = {
     "UTTARANCHAL": "05",
     "KARNATAKA": "29",
     "DELHI": "07",
+    "NEWDELHI": "07",
+    "NCTOFDELHI": "07",
     "WESTBENGAL": "19",
     "GUJARAT": "24",
     "ORISSA": "21",
@@ -145,11 +159,21 @@ STATE_NORMALIZED_MAP = {
     "PUDUCHERRY": "34",
     "PONDICHERRY": "34",
     "LADAKH": "38",
-    "DAMANDIU": "25",
+    # Daman & Diu (old code 25) merged into 26 from 26-Jan-2020; the portal
+    # rejects POS 25 with RET191240 "Invalid POS selected".
+    "DAMANDIU": "26",
+    "DAMANANDDIU": "26",
     "DADRANAGARHAVELI": "26",
     "DADRADRAANDNAGARHAVELI": "26",
     "DADRANAGARHAVELIDAMANDIU": "26",
     "DADRAANDNAGARHAVELIANDDAMANANDDIU": "26",
+    "DADRANAGARHAVELIANDDAMANDIU": "26",
+    "DADRAANDNAGARHAVELIDAMANANDDIU": "26",
+    "DNHDD": "26",
+    "TELENGANA": "36",
+    "PUDDUCHERRY": "34",
+    "JAMMUANDKASHMIRUT": "01",
+    "OTHERTERRITORY": "97",
 }
 
 def rate_to_percent(value: Any) -> float:
@@ -180,22 +204,31 @@ def normalize_state_to_code(state_str: Any) -> Optional[str]:
     if pd.isna(state_str) or not state_str:
         return None
     s = str(state_str).strip().upper()
-    # Check if it starts with digits (e.g. "09-Uttar Pradesh")
-    match = re.match(r"^(\d{2})", s)
+    if re.fullmatch(r"\d{1,2}(\.0)?", s):           # bare code, e.g. 9 / "09" / 9.0
+        s = s.split(".")[0].zfill(2)
+    # Starts with a state code (e.g. "09-Uttar Pradesh"). Retired codes map to
+    # their successor; an unknown code falls through to the name after it.
+    match = re.match(r"^(\d{2})(?!\d)\W*(.*)$", s)
     if match:
-        code = match.group(1)
-        if code in STATE_NAMES:
+        code, rest = match.group(1), match.group(2)
+        if code in VALID_POS:
             return code
-    
-    # Check in Flipkart state codes (e.g. "IN-RJ")
+        named = normalize_state_to_code(rest) if rest else None
+        return named or RETIRED_POS.get(code)
+
+    # ISO 3166-2 codes (e.g. "IN-RJ"), as Flipkart reports them
     if s in FLIPKART_STATE_CODES:
         return FLIPKART_STATE_CODES[s]
-    
-    # Strip non-alphanumeric and check in normalized map
+
+    # Strip non-alphanumeric (and a leading "THE"/"STATE OF"/"UT OF") and look up
     norm_s = "".join(c for c in s if c.isalnum())
+    for prefix in ("THE", "STATEOF", "UTOF", "UNIONTERRITORYOF"):
+        if norm_s.startswith(prefix) and norm_s[len(prefix):] in STATE_NORMALIZED_MAP:
+            norm_s = norm_s[len(prefix):]
+            break
     if norm_s in STATE_NORMALIZED_MAP:
         return STATE_NORMALIZED_MAP[norm_s]
-        
+
     return None
 
 class TaxRecord:
